@@ -14,15 +14,15 @@ const obtenerAnimes = () => {
     return JSON.parse(data);
 };
 
-//Función para entregar la respuesta del POST con el nuevo id incluido
-const formatearRespuesta = (id, obj) => {
-    const respuesta = new Object()
-    respuesta[id] = obj
-    return respuesta
-};
-
 const escribirAnime = (data) => {
     fs.writeFileSync(path, JSON.stringify(data, null, 2));
+};
+
+//Función para entregar la respuesta del POST y GET con el id incluido
+const formatearRespuesta = (id, obj) => {
+    const respuesta = new Object();
+    respuesta[id] = obj;
+    return respuesta;
 };
 
 app.get('/animes', (req, res) => {
@@ -30,10 +30,41 @@ app.get('/animes', (req, res) => {
     res.send(animes);
 });
 
+//Ruta para obtener anime por id o por id y nombre
+//Si busca por id y nombre, estos deben coincidir para que encuentre el anime
+app.get('/animes/:id', (req, res) => {
+    const animes = obtenerAnimes();
+    const id = parseInt(req.params.id);
+    const { nombre } = req.query;
+    const animeEncontrado = animes[id];
+    const nombreCoincide = animeEncontrado.nombre === nombre;
+    if (animeEncontrado && (!nombre || nombreCoincide)) {
+        const respuesta = formatearRespuesta(id, animes[id]);
+        res.json(respuesta);
+    } else {
+        res.status(404).json({ mensaje: 'Anime no encontrado' });
+    }
+});
+
+//Ruta para obtener anime por nombre
+app.get('/animes/nombre/:nombre', (req, res) => {
+    const animes = obtenerAnimes();
+    const { nombre } = req.params;
+    const animeEncontrado = Object.values(animes).filter(x => x.nombre === nombre);
+    if (animeEncontrado.length > 0) {
+        let id = Object.keys(animes).find(x => animes[x] === animeEncontrado[0]);
+        const respuesta = formatearRespuesta(id, animeEncontrado[0]);
+        res.json(respuesta);
+    } else {
+        res.status(404).json({ mensaje: 'Anime no encontrado' });
+    }
+});
+
+//Ruta POST creación de animes
+//Obtiene el último id y le suma 1 para evitar colisiones debido a eliminaciones anteriores
 app.post('/animes', (req, res) => {
     const animes = obtenerAnimes();
     const idsAnimes = Object.keys(animes);
-    //Obtiene el último id y le suma 1 para evitar colisiones con ids eliminados anteriormente
     const nuevoId = parseInt(idsAnimes[idsAnimes.length - 1]) + 1;
     const datosAnime = { ...req.body };
     animes[nuevoId] = datosAnime;
@@ -55,7 +86,7 @@ app.delete('/animes/:id', (req, res) => {
 });
 
 app.listen(PORT, () => {
-    console.log('Servidor corriendo en el puerto: ', PORT);
+    console.log('Servidor corriendo en el puerto:', PORT);
 });
 
 module.exports = { app }
