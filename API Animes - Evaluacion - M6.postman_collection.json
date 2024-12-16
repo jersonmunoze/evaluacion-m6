@@ -1,8 +1,8 @@
 {
 	"info": {
-		"_postman_id": "0e597aea-7542-4086-b054-8b3fd963bf0a",
+		"_postman_id": "3f1b5fb2-c8f5-487a-bdd1-f5cb14a87548",
 		"name": "API Animes - Evaluacion - M6",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
 		"_exporter_id": "28236537"
 	},
 	"item": [
@@ -11,17 +11,7 @@
 			"request": {
 				"method": "GET",
 				"header": [],
-				"url": {
-					"raw": "http://localhost:3000/animes",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"animes"
-					]
-				}
+				"url": "http://localhost:3000/animes"
 			},
 			"response": []
 		},
@@ -39,17 +29,7 @@
 						}
 					}
 				},
-				"url": {
-					"raw": "http://localhost:3000/animes",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"animes"
-					]
-				}
+				"url": "http://localhost:3000/animes"
 			},
 			"response": []
 		},
@@ -67,18 +47,7 @@
 						}
 					}
 				},
-				"url": {
-					"raw": "http://localhost:3000/animes/5",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"animes",
-						"5"
-					]
-				}
+				"url": "http://localhost:3000/animes/5"
 			},
 			"response": []
 		},
@@ -86,7 +55,8 @@
 			"name": "Obtener anime por id",
 			"request": {
 				"method": "GET",
-				"header": []
+				"header": [],
+				"url": "http://localhost:3000/animes/3"
 			},
 			"response": []
 		},
@@ -94,7 +64,8 @@
 			"name": "Obtener anime por nombre",
 			"request": {
 				"method": "GET",
-				"header": []
+				"header": [],
+				"url": "http://localhost:3000/animes/nombre/Naruto"
 			},
 			"response": []
 		},
@@ -102,7 +73,25 @@
 			"name": "Obtener anime por id y nombre",
 			"request": {
 				"method": "GET",
-				"header": []
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/animes/2?nombre=Dragon Ball",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"animes",
+						"2"
+					],
+					"query": [
+						{
+							"key": "nombre",
+							"value": "Dragon Ball"
+						}
+					]
+				}
 			},
 			"response": []
 		}
